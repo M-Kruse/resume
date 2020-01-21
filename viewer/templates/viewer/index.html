@@ -1,13 +1,82 @@
-{% if employment_list %}
-	{% for employment in employment_list %}
-	<h1> {{ employment.company_name }} </h1>
-		<p><b>Job Title:</b> {{ employment.job_title }}</p>
-		<p><b>Start Date:</b> {{ employment.start_date }}</p>
-		<p><b>End Date:</b> {{ employment.end_date }}</p>
-		<p><b>Reason For Leaving:</b> {{ employment.leave_reason }}</p>
-		{% for duty in employment_list.duties %}
-			<b>{{ duty.description }}</b>
-		{% endfor %}
-	{% endfor %}
-
+{% extends "viewer/base.html" %}
+	{% if employment_list %}
+		{% block content %}
+<body style="background-color:#FFFFFF;">
+    <div style="background-color:#FFFFFF;">
+        <!--[if mso | IE]>      <table         align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"      >        <tr>          <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">      <![endif]-->
+        <div style="Margin:0px auto;max-width:600px;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                <tbody>
+                    <tr>
+                        <td style="direction:ltr;font-size:0px;padding:9px 0px 9px 0px;text-align:center;vertical-align:top;">
+                            <!--[if mso | IE]>                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">                        <tr>                  <td               class="" style="vertical-align:top;width:600px;"            >          <![endif]-->
+                            <div class="mj-column-per-100 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                                                <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:center;color:#000000;">
+                                                    <p>{{ employee.name }}</p>
+                                                    <p>{{ employee.email }}</p>
+                                                    <p>{{ employee.phone }}</p>
+                                                </div>
+                                            </td>
+                        				</tr>
+									<tr>
+										<td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+											<div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+        										<p><strong>Employment History:</strong></p>
+        									</div>
+        								</td>
+        							</tr>
+        							<tr><tr>
+        						{% for employment in employment_list %}
+								  	<td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+								  		<div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+								        	<p>
+								        		<strong>{{ employment.company_name }}&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;{{ employment.start_date }} -> {{ employment.end_date }} 
+								        		</strong>
+								        	</p>
+									<p><em>{{ employment.job_title}}</em></p>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                            	<div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                                    <p><strong>Duties:</strong></p>
+                                    <ul>
+                                    {% for i in employment.duties.all %}
+										<li>{{i}}</li>
+									{% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                                <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                                <p><strong>Projects:</strong></p>
+                                <ul>
+                                	{% for i in employment.projects.all %}
+										<li>{{i}}</li>
+									{% endfor %}
+                               	</ul>
+                               	</div>
+                            </td>
+                        </tr>
+                       			{% endfor %}
+                       			</tr>
+                       		</tbody>
+                       	</table>
+                       </div>
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+   </div>
+</div>
+</body>
+{% endblock %}
 {% endif %}
+

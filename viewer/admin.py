@@ -1,8 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Employment, Duty, Project, TechField, Tech
+from .models import Employment, Employee, Duty, Project, TechField, Tech
 
+admin.site.register(Employee)
 admin.site.register(Employment)
 admin.site.register(Duty)
 admin.site.register(Project)
