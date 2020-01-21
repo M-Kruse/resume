@@ -1,7 +1,13 @@
 {% if employment_list %}
-	test
 	{% for employment in employment_list %}
-	<h1> employment.company_name </h1>>
+	<h1> {{ employment.company_name }} </h1>
+		<p><b>Job Title:</b> {{ employment.job_title }}</p>
+		<p><b>Start Date:</b> {{ employment.start_date }}</p>
+		<p><b>End Date:</b> {{ employment.end_date }}</p>
+		<p><b>Reason For Leaving:</b> {{ employment.leave_reason }}</p>
+		{% for duty in employment_list.duties %}
+			<b>{{ duty.description }}</b>
+		{% endfor %}
 	{% endfor %}
 
 {% endif %}

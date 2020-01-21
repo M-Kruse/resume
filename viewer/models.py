@@ -41,8 +41,8 @@ class Employment(models.Model):
     start_date = models.DateField('Employement Start Date', default=None)
     end_date = models.DateField('Employement End Date', default=None)
     leave_reason = models.CharField(max_length=512, default=None)
-    duties = models.ManyToManyField(Duty)
-    projects = models.ManyToManyField(Project)
+    duties = models.ManyToManyField(Duty, related_name="duties")
+    projects = models.ManyToManyField(Project,related_name="projects")
 
     def __str__(self):
         return self.company_name
