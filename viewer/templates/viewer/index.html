@@ -1,6 +1,7 @@
 {% extends "viewer/base.html" %}
 	{% if employment_list %}
 		{% block content %}
+  
 <body style="background-color:#FFFFFF;">
     <div style="background-color:#FFFFFF;">
         <!--[if mso | IE]>      <table         align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"      >        <tr>          <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">      <![endif]-->
@@ -31,6 +32,7 @@
         							</tr>
         							<tr><tr>
         						{% for employment in employment_list %}
+                    
 								  	<td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
 								  		<div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
 								        	<p>
@@ -46,9 +48,11 @@
                             	<div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
                                     <p><strong>Duties:</strong></p>
                                     <ul>
-                                    {% for i in employment.duties.all %}
-										<li>{{i}}</li>
-									{% endfor %}
+                                      {% if employment.duties %}
+                                        {% for i in employment.duties.all %}
+										                      <li>{{i}}</li>
+									                      {% endfor %}
+                                      {% endif %}
                                     </ul>
                                 </div>
                             </td>
@@ -59,8 +63,8 @@
                                 <p><strong>Projects:</strong></p>
                                 <ul>
                                 	{% for i in employment.projects.all %}
-										<li>{{i}}</li>
-									{% endfor %}
+									                 	<li>{{i}}</li>
+									                 {% endfor %}
                                	</ul>
                                	</div>
                             </td>
@@ -72,6 +76,80 @@
                        </div>
                    </td>
                </tr>
+               <tr>
+                {% if employee.exposures %}
+                    <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                            <p><strong>Technology Exposures:</strong></p>
+                          </div>
+                        </td>
+                      </tr>
+                        <tr>
+              <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                              <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                                {% for p in employee.exposures.all %}
+
+                                    <ul><li><p><strong>{{ p.name }}</strong></p></li></ul>
+                                    <ul>
+                                      {% if p.techs %}
+                                        {% for t in p.techs.all %}
+                                          {% if forloop.last %}
+                                            {{ t.name }}
+                                          {% else %}
+                                            {{ t.name }},
+                                          {% endif %}
+                                        {% endfor %}
+                                      {% endif %}
+                                    </ul>
+                                  {% endfor %}
+                                </div>
+                            </td>
+                            {% endif %}
+                        </tr>
+                <tr>
+                {% if employee.education %}
+                    <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                            <p><strong>Education:</strong></p>
+                          </div>
+                        </td>
+                      </tr>
+                        <tr>
+              <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                              <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                                {% for e in employee.education.all %}
+
+                                    <ul><li><p><strong>{{ e.name }}</strong> | {{ e.level }} | {{e.year}}</p></li></ul>
+                                    <ul>                                
+                                    </ul>
+                                  {% endfor %}
+                                </div>
+                            </td>
+                            {% endif %}
+                        </tr>
+                <tr>
+                    <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                            <p><strong>References:</strong></p>
+                          </div>
+                          {% if employee.references %}
+                        </td>
+                      </tr>
+                        <tr>
+              <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                              <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
+                                {% for r in employee.references.all %}
+
+                                    <ul><li><p><strong>{{ r.name }}</strong> | {{ r.employment }} | {{ r.contact }}</p></li></ul>
+                                    <ul>                                
+                                    </ul>
+                                  {% endfor %}
+                                </div>
+                            </td>
+                            {% else %}
+                                    <ul><li><p><strong> Available Upon Request</p></li></ul>
+                            {% endif %}
+                        </tr>
            </tbody>
        </table>
    </div>
@@ -79,4 +157,6 @@
 </body>
 {% endblock %}
 {% endif %}
+
+
 
