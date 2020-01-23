@@ -30,21 +30,21 @@ class Employee(models.Model):
     name = models.CharField(max_length=64)
     email = models.CharField(max_length=128)
     phone = models.CharField(max_length=16)
-    exposures = models.ManyToManyField('TechField', related_name='exposures', blank=True)
+    domains = models.ManyToManyField('Domain', related_name='domains', blank=True)
     education = models.ManyToManyField('Education', related_name='education', blank=True)
     references = models.ManyToManyField('Reference', related_name='references', blank=True)
 
     def __str__(self):
         return self.name
 
-class TechField(models.Model):
+class Domain(models.Model):
     name = models.CharField(max_length=64, blank=False)
-    techs = models.ManyToManyField('Tech', related_name='techs', blank=True)
+    experiences = models.ManyToManyField('Experience', related_name='xps', blank=True)
 
     def __str__(self):
         return self.name
 
-class Tech(models.Model):
+class Experience(models.Model):
     name = models.CharField(max_length=64, default=None, blank=False)
 
     def __str__(self):
