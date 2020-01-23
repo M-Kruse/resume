@@ -32,7 +32,7 @@ class Employee(models.Model):
     phone = models.CharField(max_length=16)
     domains = models.ManyToManyField('Domain', related_name='domains', blank=True)
     education = models.ManyToManyField('Education', related_name='education', blank=True)
-    references = models.ManyToManyField('Reference', related_name='references', blank=True)
+    reference = models.ManyToManyField('Reference', related_name='references', blank=True)
 
     def __str__(self):
         return self.name
@@ -61,7 +61,8 @@ class Education(models.Model):
 class Reference(models.Model):
     name = models.CharField(max_length=64, blank=False)
     contact = models.CharField(max_length=64, default="Availabe On Request", blank=True)
-    employment = models.ManyToManyField('Employment', related_name='employment', blank=True)
+    employment = models.ForeignKey(Employment, on_delete=models.CASCADE)
+    #employment = models.ManyToManyField('Employment', related_name='employments', blank=True)
     
     def __str__(self):
         return self.name
