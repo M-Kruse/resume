@@ -132,13 +132,13 @@
                       <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
                             <p><strong>References:</strong></p>
                           </div>
-                          {% if employee.references %}
+                          {% if employee.reference %}
                         </td>
                       </tr>
                         <tr>
               <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                               <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
-                                {% for r in employee.references.all %}
+                                {% for r in employee.reference.all %}
 
                                     <ul><li><p><strong>{{ r.name }}</strong> | {{ r.employment }} | {{ r.contact }}</p></li></ul>
                                     <ul>                                
