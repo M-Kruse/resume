@@ -7,6 +7,14 @@ from django.views.generic import TemplateView
 
 from .models import Employment, Employee, Experience
 
+class IndexView(generic.ListView):
+    template_name = 'viewer/index.html'
+
+    def get_queryset(self):
+        """Return the Employment objects questions."""
+        return Employment.objects.all()
+
+    
 class HTMLView(generic.ListView):
     model = Employment
     template_name = 'viewer/resume.html'
