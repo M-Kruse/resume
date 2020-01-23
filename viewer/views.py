@@ -5,7 +5,7 @@ from django.views import generic
 
 from django.views.generic import TemplateView
 
-from .models import Employment, Employee, Tech
+from .models import Employment, Employee, Experience
 
 class IndexView(generic.ListView):
     model = Employment

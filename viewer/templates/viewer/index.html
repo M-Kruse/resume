@@ -77,7 +77,7 @@
                    </td>
                </tr>
                <tr>
-                {% if employee.exposures %}
+                {% if employee.domains %}
                     <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                       <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
                             <p><strong>Technology Exposures:</strong></p>
@@ -87,16 +87,16 @@
                         <tr>
               <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                               <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
-                                {% for p in employee.exposures.all %}
+                                {% for d in employee.domains.all %}
 
-                                    <ul><li><p><strong>{{ p.name }}</strong></p></li></ul>
+                                    <ul><li><p><strong>{{ d.name }}</strong></p></li></ul>
                                     <ul>
-                                      {% if p.techs %}
-                                        {% for t in p.techs.all %}
+                                      {% if d.experiences %}
+                                        {% for e in d.experiences.all %}
                                           {% if forloop.last %}
-                                            {{ t.name }}
+                                            {{ e.name }}
                                           {% else %}
-                                            {{ t.name }},
+                                            {{ e.name }},
                                           {% endif %}
                                         {% endfor %}
                                       {% endif %}
