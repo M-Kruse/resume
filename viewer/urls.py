@@ -7,4 +7,5 @@ app_name = 'resume'
 urlpatterns = [
 	path('', views.IndexView.as_view(), name="index"),
     path('html/', views.HTMLView.as_view(), name="html"),
+    path('json/', views.JSONView.as_view(), name="json"),
 ]

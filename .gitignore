@@ -44,3 +44,6 @@ wheels/
 *.egg 
 *.manifest 
 *.spec 
+
+#Static files for django - use manage.py collectstatic when deploying to production server
+viewer/static/
