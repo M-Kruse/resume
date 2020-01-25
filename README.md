@@ -2,7 +2,13 @@
 
 The goal of this project is to provide a simple application to build a resume and output it in various formats such as PDF, DOCX, JSON, etc.
 
-This uses docker-compose to facilitate the development environment
+This uses docker-compose to facilitate the development environment.
+
+First run requires running migrations while the docker-compose containers are running.
+
+`docker-compose up`
+
+`docker-compose run web python3 manage.py makemigrations viewer && python3 manage.py sqlmigrate viewer 0001 && python3 manage.py migrate`
 
 Landing Page:
 
