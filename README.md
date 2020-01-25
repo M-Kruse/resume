@@ -12,7 +12,7 @@ First run requires running migrations while the docker-compose containers are ru
 
 Landing Page:
 
-![image](https://user-images.githubusercontent.com/46699116/73037818-3c8f3c00-3e05-11ea-8d25-0040e9210f7d.png)
+![image](https://user-images.githubusercontent.com/46699116/73128862-04196a80-3f8b-11ea-8e7d-07aaa5a5acc1.png)
 
 Admin:
 
