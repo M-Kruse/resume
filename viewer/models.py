@@ -30,7 +30,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=64)
     email = models.CharField(max_length=128)
     phone = models.CharField(max_length=16)
-    domains = models.ManyToManyField('Domain', related_name='domains', blank=True)
+    experiences = models.ManyToManyField('Experience', related_name='domains', blank=True)
     education = models.ManyToManyField('Education', related_name='education', blank=True)
     reference = models.ManyToManyField('Reference', related_name='references', blank=True)
     employment = models.ManyToManyField('Employment', related_name='employments', blank=True)
@@ -40,13 +40,13 @@ class Employee(models.Model):
 
 class Domain(models.Model):
     name = models.CharField(max_length=64, blank=False)
-    experiences = models.ManyToManyField('Experience', related_name='xps', blank=True)
 
     def __str__(self):
         return self.name
 
 class Experience(models.Model):
     name = models.CharField(max_length=64, default=None, blank=False)
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

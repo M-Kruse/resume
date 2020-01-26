@@ -63,16 +63,14 @@ class EmploymentTestCase(TestCase):
 class DomainsTestCase(TestCase):
 	def setUp(self):
 		self.domain = Domain.objects.create(name=test_domain)
-		Experience.objects.create(name=test_experience)
-		my_xps = [Experience.objects.get(name=test_experience)]
-		self.domain.experiences.set(my_xps)
-
+		
 	def test_domain(self):
 		self.assertEqual(self.domain.name, test_domain)
 
 class ExperienceTestCase(TestCase):
 	def setUp(self):
-		self.xp = Experience.objects.create(name=test_experience)
+		my_domain = Domain.objects.create(name=test_domain)
+		self.xp = Experience.objects.create(name=test_experience, domain=my_domain)
 
 	def test_experience(self):
 		self.assertEqual(self.xp.name, test_experience)
@@ -107,12 +105,12 @@ class ReferenceTestCase(TestCase):
 class EmployeeTestCase(TestCase):
 	def setUp(self):
 		self.employee = Employee.objects.create(name=test_employee, email=test_email, phone=test_phone)
-		Experience.objects.create(name=test_experience)
-		my_xps = [Experience.objects.get(name=test_experience)]
 		Domain.objects.create(name=test_domain)
 		my_domain = Domain.objects.get(name=test_domain)
-		my_domain.experiences.set(my_xps)
-		self.employee.domains.set([my_domain])
+		Experience.objects.create(name=test_experience, domain=my_domain)
+		my_xps = [Experience.objects.get(name=test_experience)]
+		
+		self.employee.experiences.set(my_xps)
 		Education.objects.create(name=test_edu, level=test_edu_level, year=test_edu_year)
 		my_edu = [Education.objects.get(name=test_edu)]
 		self.employee.education.set(my_edu)
@@ -138,9 +136,9 @@ class EmployeeTestCase(TestCase):
 		self.assertEqual(self.employee.email, test_email)
 		self.assertEqual(self.employee.phone, test_phone)
 
-	def test_employee_domains(self):
-		self.assertEqual(self.employee.domains.get(name=test_domain).name, test_domain)
-		self.assertEqual(self.employee.domains.get(name=test_domain).experiences.get(name=test_experience).name, test_experience)
+	def test_employee_experience(self):
+		self.assertEqual(self.employee.experiences.get(name=test_experience).name, test_experience)
+		self.assertEqual(self.employee.experiences.get(name=test_experience).domain.name, test_domain)
 		
 
 	def test_employee_education(self):
