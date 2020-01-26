@@ -33,6 +33,7 @@ class Employee(models.Model):
     domains = models.ManyToManyField('Domain', related_name='domains', blank=True)
     education = models.ManyToManyField('Education', related_name='education', blank=True)
     reference = models.ManyToManyField('Reference', related_name='references', blank=True)
+    employment = models.ManyToManyField('Employment', related_name='employments', blank=True)
 
     def __str__(self):
         return self.name

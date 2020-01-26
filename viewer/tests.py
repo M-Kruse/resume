@@ -124,6 +124,13 @@ class EmployeeTestCase(TestCase):
 		)
 		my_refs = [Reference.objects.create(name=test_ref, contact=test_ref_contact, employment=employer)]
 		self.employee.reference.set(my_refs)
+		my_emp = [Employment.objects.create(company_name=test_company_name,
+			job_title=test_job_title,
+			start_date=test_start_date,
+			end_date=test_end_date,
+			leave_reason=test_leave_reason,
+			)]
+		self.employee.employment.set(my_emp)
 
 
 	def test_employee(self):
@@ -141,5 +148,8 @@ class EmployeeTestCase(TestCase):
 
 	def test_employee_reference(self):
 		self.assertEqual(self.employee.reference.get(name=test_ref).name, test_ref)
+
+	def test_employee_employment(self):
+		self.assertEqual(self.employee.employment.get(company_name=test_company_name).job_title, test_job_title)
 
 
