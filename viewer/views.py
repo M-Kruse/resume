@@ -75,13 +75,18 @@ class JSONView(JSONResponseMixin, TemplateView):
             for p in e.projects.all():
                 employment_json['projects'].append(p.description)
             resume_json['employments'].append(employment_json)
-        domains = employee.domains.all()
-        for d in domains:
-            experiences = []
-            for e in d.experiences.all():
-                experiences.append(e.name)
+        experiences = employee.experiences.all()
+        d_list = []
+        for x in experiences:
+            d_list.append(x.domain.name)
+        d_list = set(d_list)
+        for domain in d_list:
+            x_list = []
+            for x in experiences:
+                if x.domain.name == domain:
+                    x_list.append(x.name)
             domains_json = {
-                d.name: experiences
+                domain: x_list
                 }
             resume_json['experiences'].append(domains_json)
         education = Education.objects.all()

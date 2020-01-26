@@ -77,7 +77,7 @@
                    </td>
                </tr>
                <tr>
-                {% if employee.domains %}
+                {% if employee.experiences %}
                     <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                       <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
                             <p><strong>Technology Exposures:</strong></p>
@@ -87,26 +87,30 @@
                         <tr>
               <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                               <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
-                                {% for d in employee.domains.all %}
-
-                                    <ul><li><p><strong>{{ d.name }}</strong></p></li></ul>
-                                    <ul>
-                                      {% if d.experiences %}
-                                        {% for e in d.experiences.all %}
+                                {% load app_filters %}                                
+                                {% for xp in employee.experiences.all %}
+                                {% if xp.domain.name|unique_list %}
+                                <ul><li><p><strong>{{ xp.domain.name }}</strong></p></li></ul>
+                                      {% for e in employee.experiences.all %}
+                                        {% if e.domain.name == xp.domain.name %}
                                           {% if forloop.last %}
                                             {{ e.name }}
                                           {% else %}
                                             {{ e.name }},
-                                          {% endif %}
-                                        {% endfor %}
+                                        {% endif %}
                                       {% endif %}
-                                    </ul>
-                                  {% endfor %}
+                                    {% endfor %}
+                                    <ul>
+                                  {% endif %} 
+                                </ul>
+                                {% endfor %}
                                 </div>
                             </td>
                             {% endif %}
                         </tr>
                 <tr>
+                  {{ ""|cleanup }}
+
                 {% if employee.education %}
                     <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                       <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;">
