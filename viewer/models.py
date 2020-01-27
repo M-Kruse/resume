@@ -70,3 +70,28 @@ class Reference(models.Model):
     
     def __str__(self):
         return self.name
+
+class Style(models.Model):
+    name = models.CharField(max_length=64, blank=False, default="Default")
+
+    def __str__(self):
+        return self.name
+
+class Resume(models.Model):
+    name = models.CharField(max_length=64, blank=False)
+    HTML = 'HTML'
+    JSON = 'JSON'
+    DOCX = 'DOCX'
+    PDF = 'PDF'
+    FORMATS = [(HTML, HTML), (JSON, JSON), (DOCX, DOCX), (PDF, PDF)]
+    output_format = models.CharField(max_length=64,
+                            blank=False,
+                            choices=FORMATS,
+                            default=JSON)
+    applicant = models.ForeignKey('Applicant', on_delete=models.CASCADE)
+    style =  models.ForeignKey('Style', on_delete=models.CASCADE)
+    create_date = models.DateField(editable=False, auto_now_add=True, blank=True)
+    edit_date = models.DateField(editable=False, auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.name
