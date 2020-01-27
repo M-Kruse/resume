@@ -6,7 +6,7 @@ from django.views import generic
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
-from .models import Employment, Employee, Experience, Education
+from .models import Employment, Applicant, Experience, Education
 
 class IndexView(generic.ListView):
     template_name = 'viewer/index.html'
@@ -29,7 +29,7 @@ class HTMLView(generic.ListView):
         """Call the base implementation first to get a context """
         context = super(HTMLView, self).get_context_data(**kwargs)
         """ Add extra context from another model """
-        context['employee'] = Employee.objects.get()
+        context['applicant'] = Applicant.objects.get()
         return context
 
 class JSONResponseMixin:
@@ -47,12 +47,12 @@ class JSONResponseMixin:
 class JSONView(JSONResponseMixin, TemplateView):
 
     def create_resume_json(self):
-        employee = Employee.objects.get()
+        applicant = Applicant.objects.get()
         resume_json = {
             "contact_info": {
-                "name": employee.name,
-                "email": employee.email,
-                "phone": employee.phone,
+                "name": applicant.name,
+                "email": applicant.email,
+                "phone": applicant.phone,
                 },
             "employments":[],
             "experiences":[],
@@ -75,7 +75,7 @@ class JSONView(JSONResponseMixin, TemplateView):
             for p in e.projects.all():
                 employment_json['projects'].append(p.description)
             resume_json['employments'].append(employment_json)
-        experiences = employee.experiences.all()
+        experiences = applicant.experiences.all()
         d_list = []
         for x in experiences:
             d_list.append(x.domain.name)
@@ -97,7 +97,7 @@ class JSONView(JSONResponseMixin, TemplateView):
                 "year": e.year
                 }
             resume_json['education'].append(education_json)
-        refs = employee.reference.all()
+        refs = applicant.reference.all()
         for r in refs:
             reference_json = {
                 "name": r.name,
