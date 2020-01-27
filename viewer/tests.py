@@ -1,5 +1,5 @@
 from django.test import TestCase
-from viewer.models import Employment, Duty, Project, Domain, Experience, Education, Reference, Applicant
+from viewer.models import Employment, Duty, Project, Domain, Experience, Education, Reference, Applicant, Style, Resume
 
 from django.contrib.auth.models import User
 
@@ -20,6 +20,9 @@ test_email = "rustyshack@example.com"
 test_phone = "1234567890"
 test_ref = "Johnny Doh"
 test_ref_contact = "Available Upon Request"
+test_resume_name = "Rustys Rez"
+test_output_format = "JSON"
+test_style = "default"
 
 class DutyTestCase(TestCase):
 	def setUp(self):
@@ -154,3 +157,16 @@ class ApplicantTestCase(TestCase):
 		self.assertEqual(self.applicant.employment.get(company_name=test_company_name).job_title, test_job_title)
 
 
+class ResumeTestCase(TestCase):
+	def setUp(self):
+		test_user = User.objects.create_user(username='UnitTest_User', password='muhdummypassword')
+		resume_applicant = Applicant.objects.create(name=test_applicant, email=test_email, phone=test_phone, owner=test_user)
+		resume_style = Style.objects.create(name=test_style)
+		self.resume = Resume.objects.create(name=test_resume_name, output_format=test_output_format, applicant=resume_applicant, style=resume_style)
+
+	def test_resume(self):
+		self.assertEqual(self.resume.name, test_resume_name)
+		self.assertEqual(self.resume.output_format, test_output_format)
+		self.assertEqual(self.resume.applicant.name, test_applicant)
+		self.assertEqual(self.resume.style, test_style)
+		
