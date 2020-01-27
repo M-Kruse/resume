@@ -2,6 +2,8 @@ import datetime
 
 from django.db import models
 
+from django.contrib.auth.models import User
+
 class Employment(models.Model):
     company_name = models.CharField(max_length=128, default=None)
     job_title = models.CharField(max_length=64, default=None)
@@ -26,7 +28,8 @@ class Project(models.Model):
     def __str__(self):
         return self.description
 
-class Employee(models.Model):
+class Applicant(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     email = models.CharField(max_length=128)
     phone = models.CharField(max_length=16)

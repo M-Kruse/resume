@@ -1,5 +1,7 @@
 from django.test import TestCase
-from viewer.models import Employment, Duty, Project, Domain, Experience, Education, Reference, Employee
+from viewer.models import Employment, Duty, Project, Domain, Experience, Education, Reference, Applicant
+
+from django.contrib.auth.models import User
 
 test_company_name = "AB Corp"
 test_job_title = "Button Smasher"
@@ -13,7 +15,7 @@ test_experience = "Button Pushing"
 test_edu = "Foo High School"
 test_edu_level = "Diploma"
 test_edu_year = "2019-01-01"
-test_employee = "Rusty Shackleford"
+test_applicant = "Rusty Shackleford"
 test_email = "rustyshack@example.com"
 test_phone = "1234567890"
 test_ref = "Johnny Doh"
@@ -102,18 +104,19 @@ class ReferenceTestCase(TestCase):
 		self.assertEqual(self.reference.employment.company_name, test_company_name)
 		self.assertEqual(self.reference.employment.leave_reason, test_leave_reason)
 
-class EmployeeTestCase(TestCase):
+class ApplicantTestCase(TestCase):
 	def setUp(self):
-		self.employee = Employee.objects.create(name=test_employee, email=test_email, phone=test_phone)
+		test_user = User.objects.create_user(username='UnitTest_User', password='muhdummypassword')
+		self.applicant = Applicant.objects.create(name=test_applicant, email=test_email, phone=test_phone, owner=test_user)
 		Domain.objects.create(name=test_domain)
 		my_domain = Domain.objects.get(name=test_domain)
 		Experience.objects.create(name=test_experience, domain=my_domain)
 		my_xps = [Experience.objects.get(name=test_experience)]
 		
-		self.employee.experiences.set(my_xps)
+		self.applicant.experiences.set(my_xps)
 		Education.objects.create(name=test_edu, level=test_edu_level, year=test_edu_year)
 		my_edu = [Education.objects.get(name=test_edu)]
-		self.employee.education.set(my_edu)
+		self.applicant.education.set(my_edu)
 		employer = Employment.objects.create(company_name=test_company_name,
 			job_title=test_job_title,
 			start_date=test_start_date,
@@ -121,33 +124,33 @@ class EmployeeTestCase(TestCase):
 			leave_reason=test_leave_reason,
 		)
 		my_refs = [Reference.objects.create(name=test_ref, contact=test_ref_contact, employment=employer)]
-		self.employee.reference.set(my_refs)
+		self.applicant.reference.set(my_refs)
 		my_emp = [Employment.objects.create(company_name=test_company_name,
 			job_title=test_job_title,
 			start_date=test_start_date,
 			end_date=test_end_date,
 			leave_reason=test_leave_reason,
 			)]
-		self.employee.employment.set(my_emp)
+		self.applicant.employment.set(my_emp)
 
 
-	def test_employee(self):
-		self.assertEqual(self.employee.name, test_employee)
-		self.assertEqual(self.employee.email, test_email)
-		self.assertEqual(self.employee.phone, test_phone)
+	def test_applicant(self):
+		self.assertEqual(self.applicant.name, test_applicant)
+		self.assertEqual(self.applicant.email, test_email)
+		self.assertEqual(self.applicant.phone, test_phone)
 
-	def test_employee_experience(self):
-		self.assertEqual(self.employee.experiences.get(name=test_experience).name, test_experience)
-		self.assertEqual(self.employee.experiences.get(name=test_experience).domain.name, test_domain)
+	def test_applicant_experience(self):
+		self.assertEqual(self.applicant.experiences.get(name=test_experience).name, test_experience)
+		self.assertEqual(self.applicant.experiences.get(name=test_experience).domain.name, test_domain)
 		
 
-	def test_employee_education(self):
-		self.assertEqual(self.employee.education.get(name=test_edu).name, test_edu)
+	def test_applicant_education(self):
+		self.assertEqual(self.applicant.education.get(name=test_edu).name, test_edu)
 
-	def test_employee_reference(self):
-		self.assertEqual(self.employee.reference.get(name=test_ref).name, test_ref)
+	def test_applicant_reference(self):
+		self.assertEqual(self.applicant.reference.get(name=test_ref).name, test_ref)
 
-	def test_employee_employment(self):
-		self.assertEqual(self.employee.employment.get(company_name=test_company_name).job_title, test_job_title)
+	def test_applicant_employment(self):
+		self.assertEqual(self.applicant.employment.get(company_name=test_company_name).job_title, test_job_title)
 
 
