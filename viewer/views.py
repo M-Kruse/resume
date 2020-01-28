@@ -6,7 +6,7 @@ from django.views import generic
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
-from .models import Employment, Applicant, Experience, Education
+from .models import Employment, Applicant, Experience, Education, Resume
 
 class IndexView(generic.ListView):
     template_name = 'viewer/index.html'
@@ -110,4 +110,54 @@ class JSONView(JSONResponseMixin, TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         return self.render_to_json_response(self.create_resume_json(), **response_kwargs)
-                
+
+class ResumeListView(generic.ListView):
+    model = Resume
+    template_name = 'viewer/resume_list.html'
+    context_object_name = 'resume_list'
+    
+    def get_queryset(self):
+        """Return the Employment objects questions."""
+        return Resume.objects.all()
+
+    # def get_context_data(self, **kwargs):
+    #     """Call the base implementation first to get a context """
+    #     context = super(HTMLView, self).get_context_data(**kwargs)
+    #     """ Add extra context from another model """
+    #     context['applicant'] = Applicant.objects.get()
+    #     return context
+
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+from .forms import ResumeForm
+
+def new_resume(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = ResumeForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+                name = form.cleaned_data['name']
+                applicant = form.cleaned_data['applicant']
+                output_format = form.cleaned_data['output_format']
+                style = form.cleaned_data['style']
+                r = Resume(name=name, applicant=applicant, output_format=output_format, style=style)
+                r.save()
+                return HttpResponseRedirect('/nextform/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ResumeForm()
+
+    return render(request, 'viewer/resume_form.html', {'form': form})
+
+# class NewResumeView(generic.ListView):
+#     model = Resume
+#     template_name = 'viewer/new_resume.html'
+    
+#     def get_queryset(self):
+#         """Return the Resume objects."""
+#         return Resume.objects.all()

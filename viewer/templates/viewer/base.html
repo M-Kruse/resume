@@ -1,4 +1,18 @@
+<html>
 <head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="/static/viewer/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/viewer/css/forms.css">
+
+    <script type="text/javascript" src="/static/viewer/js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/core.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/actions.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/urlify.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/prepopulate.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/vendor/xregexp/xregexp.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
@@ -108,8 +122,53 @@
             margin: 0px;
         }
     </style>
+
 </head>
+
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"></a>
+    <img src="{% static 'viewer/resume-icon.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Resume
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/resume">Resumes</a>
+          <a class="dropdown-item" href="/resume/new">New Resume Wizard</a>
+          </div>
+      </div>      
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <a class="nav-item nav-link disabled" href="#">Applicants</a>
+          <a class="nav-item nav-link disabled" href="#">Employments</a>  
+          <a class="nav-item nav-link disabled" href="#">Experiences</a>  
+          <a class="nav-item nav-link disabled" href="#">Education</a>  
+          <a class="nav-item nav-link disabled" href="#">References</a>  
+          <a class="nav-item nav-link disabled" href="#">Publishing</a>
+        </ul>
+        <div class="navbar-nav">
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> User <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </li>
+</div>
+</div>
+</nav>
+</header>
+
 {% block content %}
 {% endblock %}
 <footer>
 </footer>
+
+
+
+
+
+

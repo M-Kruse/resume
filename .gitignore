@@ -47,3 +47,5 @@ wheels/
 
 #Static files for django - use manage.py collectstatic when deploying to production server
 viewer/static/
+#Leave this out till the model is more stable, it isn't meaningful when there is a lot of development flux
+viewer/migrations
