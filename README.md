@@ -14,10 +14,6 @@ Landing Page:
 
 ![image](https://user-images.githubusercontent.com/46699116/73309396-fbb56f80-41d6-11ea-9138-2aebfb565a0d.png)
 
-Admin:
-
-![image](https://user-images.githubusercontent.com/46699116/73037863-5c266480-3e05-11ea-8f54-67eb9c6b0415.png)
-
 HTML:
 
 ![image](https://user-images.githubusercontent.com/46699116/73037717-ea4e1b00-3e04-11ea-8dd1-317a8c0b7392.png)
