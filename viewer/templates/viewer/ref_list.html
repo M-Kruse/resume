@@ -1,0 +1,39 @@
+{% extends "viewer/base.html" %}
+	{% if ref_list %}
+		{% block content %}
+		<div class="p-3 mb-2 text-dark">
+		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Employment</th>
+			      <th scope="col">Contact</th>
+			      <th scope="col">Actions</th>
+			    </tr>
+			</thead>
+        	<tbody>
+			{% for ref in ref_list %}
+			        <tr>
+			        	<th scope="row"> {{ forloop.counter }} </th>
+			        	<td>{{ ref.name }}</td>
+			        	<td>{{ ref.employment }}</td>
+			        	<td>{{ ref.contact }}</td>
+			        	<td>
+							<button type="button" class="btn btn-primary">Edit</button>
+							<button type="button" class="btn btn-danger">Delete</button>
+						 </td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div id="content" class="colM">	
+		<div id="content-main">
+			<a href="/reference/new"><button class="btn btn-primary">Create New Reference</button></a>
+
+		</div>
+	</div>
+</div>
+		{% endblock %}
+	{% endif %}
+

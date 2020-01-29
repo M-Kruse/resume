@@ -1,0 +1,38 @@
+{% extends "viewer/base.html" %}
+	{% if edu_list %}
+		{% block content %}
+		<div class="p-3 mb-2 text-dark">
+		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Instituion</th>
+			      <th scope="col">Education Level</th>
+			      <th scope="col">Year</th>
+			      <th scope="col">Actions</th>
+			    </tr>
+			</thead>
+        	<tbody>
+			{% for edu in edu_list %}
+			        <tr>
+			        	<th scope="row"> {{ forloop.counter }} </th>
+			        	<td>{{ edu.name }}</td>
+			        	<td>{{ edu.level }}</td>
+			        	<td>{{ edu.year }}</td>
+						<td>
+							<button type="button" class="btn btn-primary">Edit</button>
+							<button type="button" class="btn btn-danger">Delete</button>
+						 </td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div id="content" class="colM">	
+		<div id="content-main">
+			<a href="/education/new"><button class="btn btn-primary">Create New Education</button></a>
+		</div>
+	</div>
+</div>
+		{% endblock %}
+	{% endif %}
+

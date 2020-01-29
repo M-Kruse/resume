@@ -1,0 +1,45 @@
+{% extends "viewer/base.html" %}
+	{% if employment_list %}
+		{% block content %}
+		<div class="p-3 mb-2 text-dark">
+		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Company Name</th>
+			      <th scope="col">Job Title</th>
+			      <th scope="col">Start Date</th>
+			      <th scope="col">End Date</th>
+			      <th scope="col">Duties</th>
+			      <th scope="col">Projects</th>
+			      <th scope="col">Actions</th>
+			    </tr>
+			</thead>
+        	<tbody>
+			{% for e in employment_list %}
+			        <tr>
+			        	<th scope="row"> {{ forloop.counter }} </th>
+			        	<td>{{ e.company_name }}</td>
+			        	<td>{{ e.job_title }}</td>
+			        	<td>{{ e.start_date }}</td>
+			        	<td>{{ e.end_date }}</td>
+			        	<td>{% for d in e.duties.all %} <p>{{d.description}}</p> {% endfor %}</td>
+			        	<td>{% for p in e.projects.all %} <p>{{p.description}}</p> {% endfor %}</td>
+						<td>
+							<button type="button" class="btn btn-primary">Edit</button>
+							<button type="button" class="btn btn-danger">Delete</button>
+						 </td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div id="content" class="colM">	
+		<div id="content-main">
+			<a href="/employment/new"><button class="btn btn-primary">Create New Employment</button></a>
+		</div>
+	</div>
+</div>
+		{% endblock %}
+	{% endif %}
+
+

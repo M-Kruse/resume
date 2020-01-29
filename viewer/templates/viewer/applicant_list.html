@@ -1,0 +1,38 @@
+{% extends "viewer/base.html" %}
+	{% if app_list %}
+		{% block content %}
+		<div class="p-3 mb-2 text-dark">
+		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Email</th>
+			      <th scope="col">Phone</th>
+			      <th scope="col">Actions</th>
+			    </tr>
+			</thead>
+        	<tbody>
+			{% for app in app_list %}
+			        <tr>
+			        	<th scope="row"> {{ forloop.counter }} </th>
+			        	<td>{{ app.name }}</td>
+			        	<td>{{ app.email }}</td>
+			        	<td>{{ app.phone }}</td>
+						<td>
+							<button type="button" class="btn btn-primary">Edit</button>
+							<button type="button" class="btn btn-danger">Delete</button>
+						 </td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div id="content" class="colM">	
+		<div id="content-main">
+			<a href="/applicant/new"><button class="btn btn-primary">Create New Applicant</button></a>
+		</div>
+	</div>
+</div>
+		{% endblock %}
+	{% endif %}
+
