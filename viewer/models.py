@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class Employment(models.Model):
     company_name = models.CharField(max_length=128, default=None)
     job_title = models.CharField(max_length=64, default=None)
-    start_date = models.DateField('Employement Start Date', default=None)
-    end_date = models.DateField('Employement End Date', default=None)
+    start_date = models.DateField('Employment Start Date', default=None)
+    end_date = models.DateField('Employment End Date', default=None)
     leave_reason = models.CharField(max_length=512, default=None)
     duties = models.ManyToManyField('Duty', related_name='duties')
     projects = models.ManyToManyField('Project', related_name='projects')
