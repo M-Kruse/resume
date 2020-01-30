@@ -17,7 +17,7 @@
         	<tbody>
 			{% for resume in resume_list %}
 			        <tr>
-			        	<th scope="row"> {{ forloop.counter }} </th>
+			        	<th scope="row"> {{ resume.id }} </th>
 			        	<td>{{ resume.name }}</td>
 			        	<td>{{ resume.applicant }}</td>
 			        	<td>{{ resume.style }}</td>
@@ -25,7 +25,12 @@
 						<td>{{ resume.create_date }}</td>
 						<td>
 							<button type="button" class="btn btn-primary">Edit</button>
-							<button type="button" class="btn btn-primary">Preview</button>
+							<a href="/{{ resume.output_format|lower }}/{{ resume.id }}"
+							  target="popup" 
+							  onclick="window.open('/{{ resume.output_format|lower }}/{{ resume.id }}','popup','width=600,height=600'); return false;">
+							  <button type="button" class="btn btn-primary">Preview</button>
+							</a>
+							<a target="_blank" href="/{{ resume.output_format|lower }}/{{ resume.id }}"></a>
 							<button type="button" class="btn btn-danger">Delete</button>
 						 </td>
 					</tr>

@@ -20,8 +20,8 @@
 			        	<td>{{ app.email }}</td>
 			        	<td>{{ app.phone }}</td>
 						<td>
-							<button type="button" class="btn btn-primary">Edit</button>
-							<button type="button" class="btn btn-danger">Delete</button>
+							<a href="/applicant/edit/{{ app.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
+							<a href="/applicant/delete/{{ app.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}

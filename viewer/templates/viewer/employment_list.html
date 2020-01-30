@@ -26,8 +26,8 @@
 			        	<td>{% for d in e.duties.all %} <p>{{d.description}}</p> {% endfor %}</td>
 			        	<td>{% for p in e.projects.all %} <p>{{p.description}}</p> {% endfor %}</td>
 						<td>
-							<button type="button" class="btn btn-primary">Edit</button>
-							<button type="button" class="btn btn-danger">Delete</button>
+							<a href="/employment/edit/{{ e.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
+							<a href="/employment/delete/{{ e.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}

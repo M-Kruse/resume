@@ -20,8 +20,8 @@
 			        	<td>{{ ref.employment }}</td>
 			        	<td>{{ ref.contact }}</td>
 			        	<td>
-							<button type="button" class="btn btn-primary">Edit</button>
-							<button type="button" class="btn btn-danger">Delete</button>
+							<a href="/reference/edit/{{ref.id}}"><button type="button" class="btn btn-primary">Edit</button></a>
+							<a href="/reference/delete/{{ref.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -30,7 +30,6 @@
 	<div id="content" class="colM">	
 		<div id="content-main">
 			<a href="/reference/new"><button class="btn btn-primary">Create New Reference</button></a>
-
 		</div>
 	</div>
 </div>

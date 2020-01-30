@@ -1,25 +1,23 @@
 {% extends "viewer/base.html" %}
-	{% if xp_list %}
+	{% if duty_list %}
 		{% block content %}
 		<div class="p-3 mb-2 text-dark">
 		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
 			  <thead>
 			    <tr>
 			      <th scope="col">#</th>
-			      <th scope="col">Experience</th>
-			      <th scope="col">Domain</th>
+			      <th scope="col">Description</th>
 			      <th scope="col">Actions</th>
 			    </tr>
 			</thead>
         	<tbody>
-			{% for xp in xp_list %}
+			{% for d in duty_list %}
 			        <tr>
 			        	<th scope="row"> {{ forloop.counter }} </th>
-			        	<td>{{ xp.name }}</td>
-			        	<td>{{ xp.domain }}</td>
+			        	<td>{{ d.description }}</td>
 			        	<td>
-							<a href="/experience/edit/{{ xp.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
-							<a href="/experience/delete/{{ xp.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
+							<a href="/duty/edit/{{d.id}}"><button type="button" class="btn btn-primary">Edit</button></a>
+							<a href="/duty/delete/{{d.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -27,9 +25,7 @@
 	</table>
 	<div id="content" class="colM">	
 		<div id="content-main">
-			<a href="/domain/new"><button class="btn btn-primary">Create New Experience Domain</button></a>
-			<a href="/experience/new"><button class="btn btn-primary">Create New Experience</button></a>
-
+			<a href="/duty/new"><button class="btn btn-primary">Create New Duty</button></a>
 		</div>
 	</div>
 </div>
