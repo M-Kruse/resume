@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from viewer.models import Employment, Applicant, Experience, Education, Resume, Domain, Reference
+from viewer.models import Employment, Applicant, Experience, Education, Resume, Domain, Reference, Project, Duty
 
 
 class ResumeForm(ModelForm):
@@ -10,7 +10,7 @@ class ResumeForm(ModelForm):
 class ApplicantForm(ModelForm):
 	class Meta:
 		model = Applicant
-		fields = ['name', 'email', 'phone']
+		fields = ['owner', 'name', 'email', 'phone', 'employment', 'experiences', 'reference']
 
 class DomainForm(ModelForm):
 	class Meta:
@@ -36,3 +36,13 @@ class EmploymentForm(ModelForm):
 	class Meta:
 		model = Employment
 		fields = ['company_name', 'job_title', 'start_date', 'end_date', 'leave_reason', 'duties', 'projects']
+
+class ProjectForm(ModelForm):
+	class Meta:
+		model = Project
+		fields = ['description']
+
+class DutyForm(ModelForm):
+	class Meta:
+		model = Duty
+		fields = ['description']

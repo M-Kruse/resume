@@ -20,8 +20,8 @@
 			        	<td>{{ edu.level }}</td>
 			        	<td>{{ edu.year }}</td>
 						<td>
-							<button type="button" class="btn btn-primary">Edit</button>
-							<button type="button" class="btn btn-danger">Delete</button>
+							<a href="/education/edit/{{edu.id}}"><button type="button" class="btn btn-primary">Edit</button></a>
+							<a href="/education/delete/{{edu.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
