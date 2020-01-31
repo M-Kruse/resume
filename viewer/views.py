@@ -134,6 +134,8 @@ def new_resume(request):
                 style = form.cleaned_data['style']
                 r = Resume(name=name, applicant=applicant, output_format=output_format, style=style)
                 r.save()
+                if request.session['isWizard'] == True:
+                    request.session['isWizard'] = False
                 return HttpResponseRedirect('/resume/')
     else:
         form = ResumeForm()
@@ -154,9 +156,18 @@ def new_applicant(request):
                 name = form.cleaned_data['name']
                 email = form.cleaned_data['email']
                 phone = form.cleaned_data['phone']                
+                employments = form.cleaned_data['employment']
+                experiences = form.cleaned_data['experiences']
+                references = form.cleaned_data['reference']
                 a = Applicant(name=name, email=email, phone=phone, owner=request.user)
                 a.save()
-                return HttpResponseRedirect('/applicant/')
+                a.employment.set(employments)
+                a.experiences.set(experiences)
+                a.reference.set(references)
+                if request.session['isWizard'] == True:
+                    return HttpResponseRedirect('/resume/new')
+                else:
+                    return HttpResponseRedirect('/applicant/')
     else:
         form = ApplicantForm()
 
@@ -177,7 +188,13 @@ def new_domain(request):
                 name = form.cleaned_data['name']
                 d = Domain(name=name)
                 d.save()
-                return HttpResponseRedirect('/experience/')
+                if 'create_another' in request.POST:
+                    return HttpResponseRedirect('/domain/new')
+                else:
+                    if request.session['isWizard'] == True:
+                        return HttpResponseRedirect('/experience/new')
+                    else:
+                        return HttpResponseRedirect('/experience/')
     else:
         form = DomainForm()
     return render(request, 'viewer/xp_domain_form.html', {'form': form})
@@ -198,7 +215,13 @@ def new_experience(request):
                 domain = form.cleaned_data['domain']
                 e = Experience(name=name, domain=domain)
                 e.save()
-                return HttpResponseRedirect('/experience/')
+                if 'create_another' in request.POST:
+                    return HttpResponseRedirect('/experience/new')
+                else:
+                    if request.session['isWizard'] == True:
+                        return HttpResponseRedirect('/duty/new')
+                    else:
+                        return HttpResponseRedirect('/experience/')
     else:
         form = ExperienceForm()
     return render(request, 'viewer/xp_form.html', {'form': form})
@@ -220,6 +243,12 @@ def new_education(request):
                 year = form.cleaned_data['year']
                 e = Education(name=name, level=level, year=year)
                 e.save()
+        if 'create_another' in request.POST:
+            return HttpResponseRedirect('/education/new')
+        else:
+            if request.session['isWizard'] == True:
+                return HttpResponseRedirect('/employment/new')
+            else:
                 return HttpResponseRedirect('/education/')
     else:
         form = EducationForm()
@@ -242,7 +271,13 @@ def new_reference(request):
                 contact = form.cleaned_data['contact']
                 r = Reference(name=name, employment=employment, contact=contact)
                 r.save()
-                return HttpResponseRedirect('/reference/')
+                if 'create_another' in request.POST:
+                    return HttpResponseRedirect('/reference/new')
+                else:
+                    if request.session['isWizard'] == True:
+                        return HttpResponseRedirect('/applicant/new')
+                    else:
+                        return HttpResponseRedirect('/reference/')
     else:
         form = ReferenceForm()
 
@@ -277,7 +312,14 @@ def new_employment(request):
                 e.save()
                 e.duties.set(duties)
                 e.projects.set(projects)
-                return HttpResponseRedirect('/employment/')
+                if 'create_another' in request.POST:
+                    return HttpResponseRedirect('/employment/new')
+                else:
+                    if request.session['isWizard'] == True:
+                        return HttpResponseRedirect('/reference/new')
+                    else:
+                        return HttpResponseRedirect('/employment/')
+                
     else:
         form = EmploymentForm()
 
@@ -298,7 +340,13 @@ def new_project(request):
             desc = form.cleaned_data['description']
             p = Project(description=desc)
             p.save()
-            return HttpResponseRedirect('/project/')
+            if 'create_another' in request.POST:
+                return HttpResponseRedirect('/project/new')
+            else:
+                if request.session['isWizard'] == True:
+                    return HttpResponseRedirect('/education/new')
+                else:
+                    return HttpResponseRedirect('/project/')
     else:
         form = ProjectForm()
     return render(request, 'viewer/project_form.html', {'form': form})
@@ -306,7 +354,7 @@ def new_project(request):
 class DutyListView(generic.ListView):
     model = Duty
     template_name = 'viewer/duty_list.html'
-    context_object_name = 'duty_list'
+    context_object_name = 'duty_list'    
     
     def get_queryset(self):
         return Duty.objects.all()
@@ -318,10 +366,23 @@ def new_duty(request):
             desc = form.cleaned_data['description']
             d = Duty(description=desc)
             d.save()
-            return HttpResponseRedirect('/duty/')
+            if 'create_another' in request.POST:
+                return HttpResponseRedirect('/duty/new')
+            else:
+                if request.session['isWizard'] == True:
+                    return HttpResponseRedirect('/project/new')
+                else:
+                    return HttpResponseRedirect('/duty/')
     else:
         form = DutyForm()
     return render(request, 'viewer/duty_form.html', {'form': form})
+
+class ResumeWizardView(generic.ListView):
+    template_name = 'viewer/wizard_index.html'
+
+    def get_queryset(self):
+        self.request.session['isWizard'] = True
+        return Resume.objects.all()
 
 class DomainUpdateView(UpdateView):
    model = Domain
@@ -331,7 +392,7 @@ class DomainUpdateView(UpdateView):
    def form_valid(self, form):
       self.object = form.save(commit=False)
       # Any manual settings go here
-      self.object.save()
+      self.object.save()     
       return HttpResponseRedirect('/experience/')
       #return HttpResponseRedirect(self.object.get_absolute_url())
    
@@ -528,7 +589,7 @@ class ProjectDeleteView(DeleteView):
       return reverse('resume:projects')  
 
    def dispatch(self, request, *args, **kwargs):
-      return super(ProjectsDeleteView, self).dispatch(request, *args, **kwargs)      
+      return super(ProjectDeleteView, self).dispatch(request, *args, **kwargs)      
 
 class DutyDeleteView(DeleteView):
    model = Duty
