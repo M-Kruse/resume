@@ -10,7 +10,7 @@ class ResumeForm(ModelForm):
 class ApplicantForm(ModelForm):
 	class Meta:
 		model = Applicant
-		fields = ['owner', 'name', 'email', 'phone', 'employment', 'experiences', 'reference']
+		fields = ['name', 'email', 'phone', 'employment', 'experiences', 'reference']
 
 class DomainForm(ModelForm):
 	class Meta:

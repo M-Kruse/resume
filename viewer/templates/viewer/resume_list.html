@@ -24,14 +24,14 @@
 			        	<td>{{ resume.output_format }}</td>
 						<td>{{ resume.create_date }}</td>
 						<td>
-							<button type="button" class="btn btn-primary">Edit</button>
+							<a href="/resume/edit/{{ resume.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
 							<a href="/{{ resume.output_format|lower }}/{{ resume.id }}"
 							  target="popup" 
 							  onclick="window.open('/{{ resume.output_format|lower }}/{{ resume.id }}','popup','width=600,height=600'); return false;">
 							  <button type="button" class="btn btn-primary">Preview</button>
 							</a>
 							<a target="_blank" href="/{{ resume.output_format|lower }}/{{ resume.id }}"></a>
-							<button type="button" class="btn btn-danger">Delete</button>
+							<a href="/resume/delete/{{ resume.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -40,6 +40,7 @@
 	<div id="content" class="colM">	
 		<div id="content-main">
 			<a href="/resume/new"><button class="btn btn-primary">Create New Resume</button></a>
+			<a href="/resume/wizard"><button class="btn btn-primary">New Resume Wizard</button></a>
 		</div>
 	</div>
 </div>

@@ -10,6 +10,7 @@ urlpatterns = [
     path('json/<int:pk>', views.JSONView.as_view(), name="json"),
     path('resume/', views.ResumeListView.as_view(), name="resumes"),
     path('resume/new/', views.new_resume, name="newResume"),
+    path('resume/wizard', views.ResumeWizardView.as_view(), name="resumeWizard"),
     path('resume/edit/<int:pk>', views.ResumeUpdateView.as_view(), name='updateResume'),
     path('resume/delete/<int:pk>', views.ResumeDeleteView.as_view(), name='deleteResume'),
     path('applicant/', views.ApplicantListView.as_view(), name="applicants"),
@@ -45,7 +46,3 @@ urlpatterns = [
     path('project/edit/<int:pk>', views.ProjectUpdateView.as_view(), name='updateProject'),
     path('project/delete/<int:pk>', views.ProjectDeleteView.as_view(), name='deleteProject'),
 ]
-
-    # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-    # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
-    # path('<int:question_id>/vote/', views.vote, name='vote'),
