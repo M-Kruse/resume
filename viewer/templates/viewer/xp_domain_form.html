@@ -5,13 +5,25 @@
 		<div id="content" class="colM">	
         <h4>Create New Experience Domain</h4>
         <div id="content-main">
+          <ul>
+            <p>An experience domain is used to group experiences together</p>
+            <br>
+          <p> Examples: </p>
+            <ul>
+
+                <li>Programming Languages</li>
+                <li>Server Operating Systems</li>
+                <li>Networking Protocols</li>
+                <li>Frontend Frameworks</li>
+            </ul>
+            </ul>
 			<form action="" method="post">
     			{% csrf_token %}
     				<fieldset class="module aligned ">
     					{% for field in form  %}
 		      				<div class="form-row">
 			      				<div class="col-sm-6">
-			        				<b>{{ field.label_tag }}</b> - {{ field }}
+			        				<b>Experience: </b> {{ field }}
 			      				</div>
 		  					</div>
    						{% endfor %}
