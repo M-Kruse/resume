@@ -64,7 +64,7 @@ class JSONView(JSONResponseMixin, TemplateView):
             "education":[],
             "references":[]
             }
-        employments = Employment.objects.all()
+        employments = applicant.employment.all()
         for e in employments:
             employment_json = {
                     "company_name": e.company_name,
@@ -94,7 +94,7 @@ class JSONView(JSONResponseMixin, TemplateView):
                 domain: x_list
                 }
             resume_json['experiences'].append(domains_json)
-        education = Education.objects.all()
+        education = applicant.education.all()
         for e in education:
             education_json = {
                 "school": e.name,
