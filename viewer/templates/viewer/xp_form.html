@@ -1,17 +1,30 @@
 {% extends "viewer/base.html" %}
 {% block content %}
 <body class=" app-viewer model-applicant">
-	<div id="container">	
-		<div id="content" class="colM">	
+  <div id="container">  
+    <div id="content" class="colM"> 
         <h4>Create New Experience</h4>
         <div id="content-main">
+          <ul>
+            <p>An experience indicates some level of knowledge about specific topic.</p>
+            <p>Each experience requires an Experience Domain reference</p>
+            <br>
+          <p> Examples: </p>
+            <ul>
+
+                <li>Python</li>
+                <li>CentOS</li>
+                <li>Zendesk</li>
+                <li>Kernel Tuning</li>
+            </ul>
+            </ul>
 			<form action="" method="post">
     			{% csrf_token %}
     				<fieldset class="module aligned ">
     					{% for field in form  %}
 		      				<div class="form-row">
 			      				<div class="col-sm-6">
-			        				<b>{{ field.label_tag }}</b> - {{ field }}
+			        				<b>{{ field.label }}: </b>{{ field }}
 			      				</div>
 		  					</div>
    						{% endfor %}

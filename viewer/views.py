@@ -21,7 +21,7 @@ class IndexView(generic.ListView):
 class HTMLView(generic.ListView):
     model = Employment
     template_name = 'viewer/resume.html'
-    #context_object_name = 'employment_list'
+    context_object_name = 'employment_list'
     
     def get_queryset(self):
         """Return the Employment objects questions."""
