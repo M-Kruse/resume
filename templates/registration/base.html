@@ -13,10 +13,10 @@
     <script type="text/javascript" src="/static/viewer/js/prepopulate.js"></script>
     <script type="text/javascript" src="/static/viewer/js/vendor/xregexp/xregexp.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/viewer/js/jquery-3.3.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/viewer/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/viewer/css/bootstrap.min.css">
     <title>Resume Viewer</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -129,41 +129,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#"></a>
     <img src="{% static 'viewer/resume-icon.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  {% if user.is_authenticated %}
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Resume
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/resume">Resumes</a>
-          <a class="dropdown-item" href="/resume/wizard">New Resume Wizard</a>
-          </div>
-      </div>      
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <a class="nav-item nav-link" href="/applicant">Applicants</a>
-          <a class="nav-item nav-link" href="/employment">Employments</a>  
-          <a class="nav-item nav-link" href="/project">Projects</a>  
-          <a class="nav-item nav-link" href="/duty">Duties</a>  
-          <a class="nav-item nav-link" href="/experience">Experiences</a>  
-          <a class="nav-item nav-link" href="/education">Education</a>  
-          <a class="nav-item nav-link" href="/reference">References</a>  
-          <a></a>
-          <a class="nav-item nav-link disabled" href="#">Publishing</a>
-        </ul>
-        <div class="navbar-nav">
-        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> User <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">Settings</a></li>
-                <li><a href="/accounts/logout">Logout</a></li>
-            </ul>
-        </li>
-</div>
-</div>
-{% endif %}
+
 </nav>
 </header>
 
