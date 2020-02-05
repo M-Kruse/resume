@@ -1,3 +1,6 @@
+import os
+
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -6,14 +9,15 @@ from django.views import generic
 from django.http import JsonResponse
 from django.views.generic import TemplateView, UpdateView, DeleteView
 
-from .models import Employment, Applicant, Experience, Education, Resume, Domain, Experience, Reference, Project, Duty
+from .models import Employment, Applicant, Experience, Education, Resume, Domain, Experience, Reference, Project, Duty, Template
 
-from .forms import ResumeForm, ApplicantForm, DomainForm, ExperienceForm, EducationForm, ReferenceForm, EmploymentForm, ProjectForm, DutyForm
+from .forms import ResumeForm, ApplicantForm, DomainForm, ExperienceForm, EducationForm, ReferenceForm, EmploymentForm, ProjectForm, DutyForm, TemplateForm
 
 class IndexView(generic.ListView):
     template_name = 'viewer/index.html'
 
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         """Return the Employment objects questions."""
         return Employment.objects.all()
 
@@ -24,7 +28,6 @@ class HTMLView(generic.ListView):
     context_object_name = 'employment_list'
     
     def get_queryset(self):
-        """Return the Employment objects questions."""
         resume = Resume.objects.get(pk=self.kwargs.get('pk'))
         return resume.applicant.employment.all
 
@@ -50,71 +53,10 @@ class JSONResponseMixin:
 
 class JSONView(JSONResponseMixin, TemplateView):
 
-    def create_resume_json(self):
-        resume = Resume.objects.get(pk=self.kwargs.get('pk'))
-        applicant = Applicant.objects.get(pk=resume.applicant.id)
-        resume_json = {
-            "contact_info": {
-                "name": applicant.name,
-                "email": applicant.email,
-                "phone": applicant.phone,
-                },
-            "employments":[],
-            "experiences":[],
-            "education":[],
-            "references":[]
-            }
-        employments = applicant.employment.all()
-        for e in employments:
-            employment_json = {
-                    "company_name": e.company_name,
-                    "job_title": e.job_title,
-                    "start_date": e.start_date,
-                    "start_date": e.end_date,
-                    "duties": [],
-                    "projects": [],
-                }
-            for d in e.duties.all():
-                employment_json['duties'].append(d.description)
-
-            for p in e.projects.all():
-                employment_json['projects'].append(p.description)
-            resume_json['employments'].append(employment_json)
-        experiences = applicant.experiences.all()
-        d_list = []
-        for x in experiences:
-            d_list.append(x.domain.name)
-        d_list = set(d_list)
-        for domain in d_list:
-            x_list = []
-            for x in experiences:
-                if x.domain.name == domain:
-                    x_list.append(x.name)
-            domains_json = {
-                domain: x_list
-                }
-            resume_json['experiences'].append(domains_json)
-        education = applicant.education.all()
-        for e in education:
-            education_json = {
-                "school": e.name,
-                "level": e.level,
-                "year": e.year
-                }
-            resume_json['education'].append(education_json)
-        refs = applicant.reference.all()
-        for r in refs:
-            reference_json = {
-                "name": r.name,
-                "employment": r.employment.company_name,
-                "contact": r.contact,
-            }
-            print(reference_json)
-            resume_json['references'].append(reference_json)
-        return resume_json
-
     def render_to_response(self, context, **response_kwargs):
-        return self.render_to_json_response(self.create_resume_json(), **response_kwargs)
+        return self.render_to_json_response(create_resume_json(self.kwargs.get('pk')), **response_kwargs)
+
+
 
 class ResumeListView(generic.ListView):
     model = Resume
@@ -122,6 +64,7 @@ class ResumeListView(generic.ListView):
     context_object_name = 'resume_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Resume.objects.all()
 
 def new_resume(request):
@@ -131,15 +74,16 @@ def new_resume(request):
                 name = form.cleaned_data['name']
                 applicant = form.cleaned_data['applicant']
                 output_format = form.cleaned_data['output_format']
-                style = form.cleaned_data['style']
-                r = Resume(name=name, applicant=applicant, output_format=output_format, style=style)
+                template = form.cleaned_data['template']
+                #style = form.cleaned_data['style']
+                r = Resume(name=name, applicant=applicant, output_format=output_format, template=template)
                 r.save()
                 if request.session['isWizard'] == True:
                     request.session['isWizard'] = False
                 return HttpResponseRedirect('/resume/')
     else:
         form = ResumeForm()
-    return render(request, 'viewer/resume_form.html', {'form': form})
+    return render(request, 'viewer/resume_form.html', {'form': form})  
 
 class ApplicantListView(generic.ListView):
     model = Applicant
@@ -159,11 +103,13 @@ def new_applicant(request):
                 employments = form.cleaned_data['employment']
                 experiences = form.cleaned_data['experiences']
                 references = form.cleaned_data['reference']
+                education = form.cleaned_data['education']
                 a = Applicant(name=name, email=email, phone=phone, owner=request.user)
                 a.save()
                 a.employment.set(employments)
                 a.experiences.set(experiences)
                 a.reference.set(references)
+                a.education.set(education)
                 if request.session['isWizard'] == True:
                     return HttpResponseRedirect('/resume/new')
                 else:
@@ -179,6 +125,7 @@ class DomainListView(generic.ListView):
     context_object_name = 'domain_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Domain.objects.all()
 
 def new_domain(request):
@@ -232,6 +179,7 @@ class EducationListView(generic.ListView):
     context_object_name = 'edu_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Education.objects.all()
 
 def new_education(request):
@@ -260,6 +208,7 @@ class ReferenceListView(generic.ListView):
     context_object_name = 'ref_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Reference.objects.all()
 
 def new_reference(request):
@@ -289,6 +238,7 @@ class EmploymentListView(generic.ListView):
     context_object_name = 'employment_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Employment.objects.all()
 
 def new_employment(request):
@@ -331,6 +281,7 @@ class ProjectListView(generic.ListView):
     context_object_name = 'project_list'
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Project.objects.all()
 
 def new_project(request):
@@ -357,6 +308,7 @@ class DutyListView(generic.ListView):
     context_object_name = 'duty_list'    
     
     def get_queryset(self):
+        self.request.session['isWizard'] = False
         return Duty.objects.all()
 
 def new_duty(request):
@@ -377,12 +329,60 @@ def new_duty(request):
         form = DutyForm()
     return render(request, 'viewer/duty_form.html', {'form': form})
 
+class TemplateListView(generic.ListView):
+    model = Template
+    template_name = 'viewer/template_list.html'
+    context_object_name = 'template_list'    
+    
+    def get_queryset(self):
+        self.request.session['isWizard'] = False
+        return Template.objects.all()
+
+def handle_uploaded_file(f):
+    with open('/home/devel/test.docx', 'w') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+def new_template(request):
+    if request.method == 'POST':
+        form = TemplateForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            for filename, file in request.FILES.items():
+                template_file = request.FILES[filename].name
+            print("template file:", template_file)
+            t = Template(name=name, file=template_file)
+            t.save()
+            form.save()
+            return HttpResponseRedirect('/template/')
+    else:
+        form = TemplateForm()
+    return render(request, 'viewer/template_form.html', {'form': form})
+
+def preview_template(request):
+    template_file = ''
+    with open(filepath, 'r') as fp:
+        data = fp.read()
+    served_filename = ''
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    response.write(data)
+    return response
+
 class ResumeWizardView(generic.ListView):
     template_name = 'viewer/wizard_index.html'
 
     def get_queryset(self):
         self.request.session['isWizard'] = True
         return Resume.objects.all()
+
+class TemplatePreviewView(generic.DetailView):
+    template_name = 'viewer/wizard_index.html'
+
+    def get_queryset(self):
+        self.request.session['isWizard'] = True
+        return Resume.objects.all()
+
 
 class DomainUpdateView(UpdateView):
    model = Domain
@@ -519,6 +519,19 @@ class ResumeUpdateView(UpdateView):
    def dispatch(self, request, *args, **kwargs):
      return super(ResumeUpdateView, self).dispatch(request, *args, **kwargs)
 
+class TemplateUpdateView(UpdateView):
+   model = Template
+   form_class = TemplateForm
+   template_name = 'viewer/template_update_form.html'
+
+   def form_valid(self, form):
+      self.object = form.save(commit=False)
+      self.object.save()
+      return HttpResponseRedirect('/template/')
+   
+   def dispatch(self, request, *args, **kwargs):
+     return super(ResumeUpdateView, self).dispatch(request, *args, **kwargs)
+
 class DomainDeleteView(DeleteView):
    model = Domain
 
@@ -599,3 +612,104 @@ class DutyDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(DutyDeleteView, self).dispatch(request, *args, **kwargs)
+
+class TemplateDeleteView(DeleteView):
+   model = Template
+
+   def get_success_url(self):
+      return reverse('resume:templates')  
+
+   def dispatch(self, request, *args, **kwargs):
+      return super(TemplateDeleteView, self).dispatch(request, *args, **kwargs)
+
+def view_template(request, *args, **kwargs):
+    template = Template.objects.get(pk=kwargs.get('pk'))
+    filename = template.file.path
+    data = open(filename, "rb").read()
+    response = HttpResponse(data, content_type='application/vnd')
+    response['Content-Length'] = os.path.getsize(filename)
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename.split('/')[-1])
+
+    return response
+
+def build_resume_from_docx_template(request, *args, **kwargs):
+    from docxtpl import DocxTemplate
+    template_path = "/media/uploads/example_resume_template.docx"
+    doc = DocxTemplate(template_path)
+    resume_json = create_resume_json(kwargs.get('pk'))
+    doc.render(resume_json)
+    if kwargs.get('filename'):
+        filename = kwargs.get('filename')
+    else:
+        filename = "preview_resume.docx"
+    new_doc = "/media/{0}".format(filename)
+    doc.save(new_doc)
+    data = open(new_doc, "rb").read()
+    response = HttpResponse(data, content_type='application/vnd')
+    response['Content-Length'] = os.path.getsize(new_doc)
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+    return response
+
+
+def create_resume_json(pk):
+    resume = Resume.objects.get(pk=pk)
+    applicant = Applicant.objects.get(pk=resume.applicant.id)
+    resume_json = {
+        "contact_info": {
+            "name": applicant.name,
+            "email": applicant.email,
+            "phone": applicant.phone,
+            },
+        "employments":[],
+        "experiences":[],
+        "education":[],
+        "references":[]
+        }
+    employments = applicant.employment.all()
+    for e in employments:
+        employment_json = {
+                "company_name": e.company_name,
+                "job_title": e.job_title,
+                "start_date": e.start_date,
+                "start_date": e.end_date,
+                "duties": [],
+                "projects": [],
+            }
+        for d in e.duties.all():
+            employment_json['duties'].append(d.description)
+
+        for p in e.projects.all():
+            employment_json['projects'].append(p.description)
+        resume_json['employments'].append(employment_json)
+    experiences = applicant.experiences.all()
+    d_list = []
+    for x in experiences:
+        d_list.append(x.domain.name)
+    d_list = set(d_list)
+    for domain in d_list:
+        x_list = []
+        for x in experiences:
+            if x.domain.name == domain:
+                x_list.append(x.name)
+        domains_json = {
+            domain: x_list
+            }
+        resume_json['experiences'].append(domains_json)
+    education = applicant.education.all()
+    for e in education:
+        education_json = {
+            "school": e.name,
+            "level": e.level,
+            "year": e.year
+            }
+        resume_json['education'].append(education_json)
+    refs = applicant.reference.all()
+    for r in refs:
+        reference_json = {
+            "name": r.name,
+            "employment": r.employment.company_name,
+            "contact": r.contact,
+        }
+        print(reference_json)
+        resume_json['references'].append(reference_json)
+    return resume_json

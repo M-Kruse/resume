@@ -91,9 +91,17 @@ class Resume(models.Model):
                             choices=FORMATS,
                             default=JSON)
     applicant = models.ForeignKey('Applicant', on_delete=models.CASCADE)
-    style =  models.ForeignKey('Style', on_delete=models.CASCADE)
+    #style =  models.ForeignKey('Style', on_delete=models.CASCADE, blank=True)
     create_date = models.DateField(editable=False, auto_now_add=True, blank=True)
     edit_date = models.DateField(editable=False, auto_now_add=True, blank=True)
+    template = models.ForeignKey('Template', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class Template(models.Model):
+    name = models.CharField(max_length=64, blank=False)
+    file = models.FileField(upload_to='uploads/') 
 
     def __str__(self):
         return self.name
