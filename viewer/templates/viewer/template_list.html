@@ -1,0 +1,40 @@
+{% extends "viewer/base.html" %}
+	{% if template_list %}
+		{% block content %}
+		<div class="p-3 mb-2 text-dark">
+		<table class="table" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Template Name</th>
+			      <th scope="col">File</th>
+			      <th scope="col">Actions</th>
+			    </tr>
+			</thead>
+        	<tbody>
+			{% for template in template_list %}
+			        <tr>
+			        	<th scope="row"> {{ template.id }} </th>
+			        	<td>{{ template.name }}</td>
+			        	<td>{{ template.file }}</td>
+			        	<td>
+							<a href="/template/view/{{ template.id }}">
+							  <button type="button" class="btn btn-primary">View</button>
+							</a>
+							<a target="_blank" href="/template/view/{{ template.id }}"></a>
+							<a href="/template/delete/{{ template.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
+						 </td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div id="content" class="colM">	
+		<div id="content-main">
+			<a href="/template/new"><button class="btn btn-primary">Upload New Template</button></a>
+			
+		</div>
+	</div>
+</div>
+		{% endblock %}
+	{% endif %}
+

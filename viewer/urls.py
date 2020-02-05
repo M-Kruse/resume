@@ -8,6 +8,7 @@ urlpatterns = [
 	path('', login_required(views.IndexView.as_view()), name="index"),
     path('html/<int:pk>', views.HTMLView.as_view(), name="html"),
     path('json/<int:pk>', views.JSONView.as_view(), name="json"),
+    path('docx/<int:pk>', views.build_resume_from_docx_template, name="docx"),
     path('resume/', login_required(views.ResumeListView.as_view()), name="resumes"),
     path('resume/new/', login_required(views.new_resume), name="newResume"),
     path('resume/wizard', login_required(views.ResumeWizardView.as_view()), name="resumeWizard"),
@@ -45,4 +46,10 @@ urlpatterns = [
     path('project/new', login_required(views.new_project), name='newProject'),
     path('project/edit/<int:pk>', login_required(views.ProjectUpdateView.as_view()), name='updateProject'),
     path('project/delete/<int:pk>', login_required(views.ProjectDeleteView.as_view()), name='deleteProject'),
+    path('template/', login_required(views.TemplateListView.as_view()), name='templates'),
+    path('template/new', login_required(views.new_template), name='newTemplate'),
+    path('template/edit/<int:pk>', login_required(views.TemplateUpdateView.as_view()), name='updateTemplate'),
+    path('template/delete/<int:pk>', login_required(views.TemplateDeleteView.as_view()), name='deleteTemplate'),
+    path('template/view/<int:pk>', login_required(views.view_template), name='previewTemplate'),
+
 ]

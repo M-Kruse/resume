@@ -127,3 +127,6 @@ STATIC_ROOT = '/home/devel/Code/resume/viewer/static/'
 LOGIN_URL = '/accounts/login/'
 
 LOGIN_REDIRECT_URL = '/'
+
+# Media root directory
+MEDIA_ROOT = '/media/'

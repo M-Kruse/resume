@@ -2,22 +2,25 @@
 {% block content %}
 <body class=" app-viewer model-applicant">
 	<div id="container">	
+    {{ formset.errors }}
+    {{ formset.non_field_errors }}
+    {{ form.errors }}
 		<div id="content" class="colM">	
-        <h4>Create New Employment</h4>
+        <h4>Upload New Template</h4>
         <div id="content-main">
-			<form action="" method="post">
+			<form enctype="multipart/form-data" action="" method="post">
     			{% csrf_token %}
     				<fieldset class="module aligned ">
     					{% for field in form  %}
 		      				<div class="form-row">
 			      				<div class="col-sm-6">
-			        				<b>{{ field.label_tag }}</b> - {{ field }}
+			        				<b>{{ field.label_tag }}</b> {{ field }}
 			      				</div>
 		  					</div>
    						{% endfor %}
 			   		</fieldset>
-   					<input type="submit" class="btn btn-primary" value="Create">
-            <input type="submit" class="btn btn-primary" name="create_another" value="Create And Add Another">
+   					<input type="submit" class="btn btn-primary" value="Upload">
+   				
    			</form>
    		</div>
    		<br class="clear">

@@ -1,11 +1,11 @@
 from django.forms import ModelForm
-from viewer.models import Employment, Applicant, Experience, Education, Resume, Domain, Reference, Project, Duty
+from viewer.models import Employment, Applicant, Experience, Education, Resume, Domain, Reference, Project, Duty, Template
 
 
 class ResumeForm(ModelForm):
 	class Meta:
 		model = Resume
-		fields = ['name', 'applicant', 'output_format', 'style' ]
+		fields = ['name', 'applicant', 'output_format', 'template' ]
 
 class ApplicantForm(ModelForm):
 	class Meta:
@@ -46,3 +46,8 @@ class DutyForm(ModelForm):
 	class Meta:
 		model = Duty
 		fields = ['description']
+
+class TemplateForm(ModelForm):
+	class Meta:
+		model = Template
+		fields = ['name', 'file']
