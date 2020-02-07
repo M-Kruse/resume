@@ -27,7 +27,7 @@
 			        	<td>{% for p in e.projects.all %} <p>{{p.description}}</p> {% endfor %}</td>
 						<td>
 							<a href="/employment/edit/{{ e.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
-							<a href="/employment/delete/{{ e.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
+							<a class="show-delete-{{ e.id }}" href=#><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -39,6 +39,18 @@
 		</div>
 	</div>
 </div>
+	{% for e in employment_list %}
+		<script>
+			$(document).on("click", ".show-delete-{{ e.id }}", function(x) {
+				bootbox.confirm("Are you sure you want to delete?",
+				function (result) {        
+						if(result) {
+							window.open("/employment/delete/{{ e.id }}","_self");
+						};
+				});
+			});
+		</script>
+	{% endfor %}
 		{% endblock %}
 	{% endif %}
 

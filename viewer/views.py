@@ -541,6 +541,9 @@ class DomainDeleteView(DeleteView):
    def dispatch(self, request, *args, **kwargs):
       return super(DomainDeleteView, self).dispatch(request, *args, **kwargs)
 
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
+
 class ExperienceDeleteView(DeleteView):
    model = Experience
 
@@ -549,6 +552,9 @@ class ExperienceDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(ExperienceDeleteView, self).dispatch(request, *args, **kwargs)
+
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
 
 class ResumeDeleteView(DeleteView):
    model = Resume
@@ -559,6 +565,9 @@ class ResumeDeleteView(DeleteView):
    def dispatch(self, request, *args, **kwargs):
       return super(ResumeDeleteView, self).dispatch(request, *args, **kwargs)
 
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
+
 class ApplicantDeleteView(DeleteView):
    model = Applicant
 
@@ -567,6 +576,9 @@ class ApplicantDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(ApplicantDeleteView, self).dispatch(request, *args, **kwargs)
+
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
 
 class EmploymentDeleteView(DeleteView):
    model = Employment
@@ -577,6 +589,9 @@ class EmploymentDeleteView(DeleteView):
    def dispatch(self, request, *args, **kwargs):
       return super(EmploymentDeleteView, self).dispatch(request, *args, **kwargs)
 
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
+
 class ReferenceDeleteView(DeleteView):
    model = Reference
 
@@ -585,6 +600,9 @@ class ReferenceDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(ReferenceDeleteView, self).dispatch(request, *args, **kwargs)
+
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
 
 class EducationDeleteView(DeleteView):
    model = Education
@@ -595,6 +613,9 @@ class EducationDeleteView(DeleteView):
    def dispatch(self, request, *args, **kwargs):
       return super(EducationDeleteView, self).dispatch(request, *args, **kwargs)
 
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
+
 class ProjectDeleteView(DeleteView):
    model = Project
 
@@ -603,6 +624,9 @@ class ProjectDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(ProjectDeleteView, self).dispatch(request, *args, **kwargs)      
+
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
 
 class DutyDeleteView(DeleteView):
    model = Duty
@@ -613,6 +637,9 @@ class DutyDeleteView(DeleteView):
    def dispatch(self, request, *args, **kwargs):
       return super(DutyDeleteView, self).dispatch(request, *args, **kwargs)
 
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
+
 class TemplateDeleteView(DeleteView):
    model = Template
 
@@ -621,6 +648,9 @@ class TemplateDeleteView(DeleteView):
 
    def dispatch(self, request, *args, **kwargs):
       return super(TemplateDeleteView, self).dispatch(request, *args, **kwargs)
+
+   def get(self, request, *args, **kwargs):
+      return self.post(request, *args, **kwargs)
 
 def view_template(request, *args, **kwargs):
     template = Template.objects.get(pk=kwargs.get('pk'))
@@ -633,10 +663,13 @@ def view_template(request, *args, **kwargs):
     return response
 
 def build_resume_from_docx_template(request, *args, **kwargs):
-    from docxtpl import DocxTemplate
-    template_path = "/media/uploads/example_resume_template.docx"
-    doc = DocxTemplate(template_path)
+    my_resume = Resume.objects.get(pk=kwargs.get('pk'))
+    preview_format = my_resume.output_format
+    template_path = my_resume.template.file
     resume_json = create_resume_json(kwargs.get('pk'))
+    from docxtpl import DocxTemplate
+    #template_path = "/media/uploads/example_resume_template.docx"
+    doc = DocxTemplate(template_path)
     doc.render(resume_json)
     if kwargs.get('filename'):
         filename = kwargs.get('filename')

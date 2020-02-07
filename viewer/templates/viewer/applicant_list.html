@@ -21,7 +21,7 @@
 			        	<td>{{ app.phone }}</td>
 						<td>
 							<a href="/applicant/edit/{{ app.id }}"><button type="button" class="btn btn-primary">Edit</button></a>
-							<a href="/applicant/delete/{{ app.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+							<a class="show-delete-{{ app.id }}" href=#><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -33,6 +33,19 @@
 		</div>
 	</div>
 </div>
+	{% for app in app_list %}
+		<script>
+			$(document).on("click", ".show-delete-{{ app.id }}", function(e) {
+
+				bootbox.confirm("Are you sure you want to delete?",
+				function (result) {        
+						if(result) {
+							window.open("/applicant/delete/{{ app.id }}","_self");
+						};
+				});
+			});
+		</script>
+	{% endfor %}
 		{% endblock %}
 	{% endif %}
 
