@@ -29,7 +29,7 @@
 							  <button type="button" class="btn btn-primary">Preview</button>
 							</a>
 							<a target="_blank" href="/{{ resume.output_format|lower }}/{{ resume.id }}"></a>
-							<a href="/resume/delete/{{ resume.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
+							<a class="show-delete-{{ resume.id }}" href=#><button type="button" class="btn btn-danger">Delete</button></a>
 						 </td>
 					</tr>
 			{% endfor %}
@@ -42,6 +42,19 @@
 		</div>
 	</div>
 </div>
+	{% for resume in resume_list %}
+		<script>
+			$(document).on("click", ".show-delete-{{ resume.id }}", function(e) {
+
+				bootbox.confirm("Are you sure you want to delete?",
+				function (result) {        
+						if(result) {
+							window.open("/resume/delete/{{ resume.id }}","_self");
+						};
+				});
+			});
+		</script>
+	{% endfor %}
 		{% endblock %}
 	{% endif %}
 
