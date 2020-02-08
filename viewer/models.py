@@ -5,8 +5,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView
 
+from django.conf import settings
 
 class Employment(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=128, default=None)
     job_title = models.CharField(max_length=64, default=None)
     start_date = models.DateField('Employment Start Date', default=None)
@@ -19,19 +21,21 @@ class Employment(models.Model):
         return self.company_name
 
 class Duty(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     description = models.CharField(max_length=256, default=None, blank=True)
    
     def __str__(self):
         return self.description
 
 class Project(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     description = models.CharField(max_length=256, default=None, blank=True)
 
     def __str__(self):
         return self.description
 
 class Applicant(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     email = models.CharField(max_length=128)
     phone = models.CharField(max_length=16)
@@ -44,12 +48,14 @@ class Applicant(models.Model):
         return self.name
 
 class Domain(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, blank=False)
 
     def __str__(self):
         return self.name
 
 class Experience(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, default=None, blank=False)
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
 
@@ -57,6 +63,7 @@ class Experience(models.Model):
         return self.name
 
 class Education(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, default="N/A", blank=False)
     level = models.CharField(max_length=64, default="N/A", blank=True)
     year = models.DateField('Graduation Year', default=None, blank=False)
@@ -65,6 +72,7 @@ class Education(models.Model):
         return self.name
 
 class Reference(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, blank=False)
     contact = models.CharField(max_length=64, default="Availabe On Request", blank=True)
     employment = models.ForeignKey(Employment, on_delete=models.CASCADE)
@@ -74,12 +82,14 @@ class Reference(models.Model):
         return self.name
 
 class Style(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, blank=False, default="Default")
 
     def __str__(self):
         return self.name
 
 class Resume(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, blank=False)
     HTML = 'HTML'
     JSON = 'JSON'
@@ -100,6 +110,7 @@ class Resume(models.Model):
         return self.name
 
 class Template(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, blank=False)
     file = models.FileField(upload_to='uploads/') 
 
