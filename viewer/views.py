@@ -19,16 +19,15 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         self.request.session['isWizard'] = False
         """Return the Employment objects questions."""
-        return Employment.objects.all()
+        return None
 
-    
 class HTMLView(generic.ListView):
     model = Employment
     template_name = 'viewer/resume.html'
     context_object_name = 'employment_list'
     
     def get_queryset(self):
-        resume = Resume.objects.get(pk=self.kwargs.get('pk'))
+        resume = Resume.objects.get(owner=request.user)
         return resume.applicant.employment.all
 
     def get_context_data(self, **kwargs):
@@ -65,8 +64,9 @@ class ResumeListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Resume.objects.all()
-
+        resume = Resume.objects.all().order_by("id")
+        return resume.filter(owner=self.request.user)
+         
 def new_resume(request):
     if request.method == 'POST':
         form = ResumeForm(request.POST)
@@ -76,7 +76,7 @@ def new_resume(request):
                 output_format = form.cleaned_data['output_format']
                 template = form.cleaned_data['template']
                 #style = form.cleaned_data['style']
-                r = Resume(name=name, applicant=applicant, output_format=output_format, template=template)
+                r = Resume(owner=request.user, name=name, applicant=applicant, output_format=output_format, template=template)
                 r.save()
                 if request.session['isWizard'] == True:
                     request.session['isWizard'] = False
@@ -91,8 +91,9 @@ class ApplicantListView(generic.ListView):
     context_object_name = 'app_list'
     
     def get_queryset(self):
-        return Applicant.objects.all()
-
+        apps = Applicant.objects.all().order_by("id")
+        return apps.filter(owner=self.request.user)
+        
 def new_applicant(request):
     if request.method == 'POST':
         form = ApplicantForm(request.POST)
@@ -104,7 +105,7 @@ def new_applicant(request):
                 experiences = form.cleaned_data['experiences']
                 references = form.cleaned_data['reference']
                 education = form.cleaned_data['education']
-                a = Applicant(name=name, email=email, phone=phone, owner=request.user)
+                a = Applicant(owner=request.user, name=name, email=email, phone=phone)
                 a.save()
                 a.employment.set(employments)
                 a.experiences.set(experiences)
@@ -126,14 +127,15 @@ class DomainListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Domain.objects.all()
+        domains = Domain.objects.all().order_by("id")
+        return domains.filter(owner=self.request.user)
 
 def new_domain(request):
     if request.method == 'POST':
         form = DomainForm(request.POST)
         if form.is_valid():
                 name = form.cleaned_data['name']
-                d = Domain(name=name)
+                d = Domain(owner=request.user, name=name)
                 d.save()
                 if 'create_another' in request.POST:
                     return HttpResponseRedirect('/domain/new')
@@ -152,7 +154,8 @@ class ExperienceListView(generic.ListView):
     context_object_name = 'xp_list'
     
     def get_queryset(self):
-        return Experience.objects.all()
+        xps = Experience.objects.all().order_by("id")
+        return xps.filter(owner=self.request.user)
 
 def new_experience(request):
     if request.method == 'POST':
@@ -160,7 +163,7 @@ def new_experience(request):
         if form.is_valid():
                 name = form.cleaned_data['name']
                 domain = form.cleaned_data['domain']
-                e = Experience(name=name, domain=domain)
+                e = Experience(owner=request.user, name=name, domain=domain)
                 e.save()
                 if 'create_another' in request.POST:
                     return HttpResponseRedirect('/experience/new')
@@ -180,7 +183,8 @@ class EducationListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Education.objects.all()
+        edus = Education.objects.all().order_by("id")
+        return edus.filter(owner=self.request.user)
 
 def new_education(request):
     if request.method == 'POST':
@@ -189,7 +193,7 @@ def new_education(request):
                 name = form.cleaned_data['name']
                 level = form.cleaned_data['level']
                 year = form.cleaned_data['year']
-                e = Education(name=name, level=level, year=year)
+                e = Education(owner=request.user, name=name, level=level, year=year)
                 e.save()
         if 'create_another' in request.POST:
             return HttpResponseRedirect('/education/new')
@@ -209,7 +213,8 @@ class ReferenceListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Reference.objects.all()
+        refs = Reference.objects.all().order_by("id")
+        return refs.filter(owner=self.request.user)
 
 def new_reference(request):
     if request.method == 'POST':
@@ -218,7 +223,7 @@ def new_reference(request):
                 name = form.cleaned_data['name']
                 employment = form.cleaned_data['employment']
                 contact = form.cleaned_data['contact']
-                r = Reference(name=name, employment=employment, contact=contact)
+                r = Reference(owner=request.user, name=name, employment=employment, contact=contact)
                 r.save()
                 if 'create_another' in request.POST:
                     return HttpResponseRedirect('/reference/new')
@@ -239,7 +244,8 @@ class EmploymentListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Employment.objects.all()
+        employments = Employment.objects.all().order_by("id")
+        return employments.filter(owner=self.request.user)
 
 def new_employment(request):
     if request.method == 'POST':
@@ -253,6 +259,7 @@ def new_employment(request):
                 duties = form.cleaned_data['duties']
                 projects = form.cleaned_data['projects']
                 e = Employment(
+                            owner=request.user,
                             company_name=company_name, 
                             job_title=job_title,
                             start_date=start_date,
@@ -282,14 +289,15 @@ class ProjectListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Project.objects.all()
+        projects = Project.objects.all().order_by("id")
+        return projects.filter(owner=self.request.user)
 
 def new_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
             desc = form.cleaned_data['description']
-            p = Project(description=desc)
+            p = Project(owner=request.user, description=desc)
             p.save()
             if 'create_another' in request.POST:
                 return HttpResponseRedirect('/project/new')
@@ -309,14 +317,15 @@ class DutyListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Duty.objects.all()
+        duties = Duty.objects.all().order_by("id")
+        return duties.filter(owner=self.request.user)
 
 def new_duty(request):
     if request.method == 'POST':
         form = DutyForm(request.POST)
         if form.is_valid():
             desc = form.cleaned_data['description']
-            d = Duty(description=desc)
+            d = Duty(owner=request.user, description=desc)
             d.save()
             if 'create_another' in request.POST:
                 return HttpResponseRedirect('/duty/new')
@@ -336,7 +345,8 @@ class TemplateListView(generic.ListView):
     
     def get_queryset(self):
         self.request.session['isWizard'] = False
-        return Template.objects.all()
+        templates = Template.objects.all().order_by("id")
+        return templates.filter(owner=self.request.user)
 
 def handle_uploaded_file(f):
     with open('/home/devel/test.docx', 'w') as destination:
@@ -351,9 +361,8 @@ def new_template(request):
             for filename, file in request.FILES.items():
                 template_file = request.FILES[filename].name
             print("template file:", template_file)
-            t = Template(name=name, file=template_file)
+            t = Template(owner=request.user, name=name, file=template_file)
             t.save()
-            form.save()
             return HttpResponseRedirect('/template/')
     else:
         form = TemplateForm()
