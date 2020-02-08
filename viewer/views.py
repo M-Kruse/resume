@@ -348,12 +348,8 @@ class TemplateListView(generic.ListView):
         templates = Template.objects.all().order_by("id")
         return templates.filter(owner=self.request.user)
 
-def handle_uploaded_file(f):
-    with open('/home/devel/test.docx', 'w') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-
 def new_template(request):
+    upload_dir = "uploads/"
     if request.method == 'POST':
         form = TemplateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -361,7 +357,7 @@ def new_template(request):
             for filename, file in request.FILES.items():
                 template_file = request.FILES[filename].name
             print("template file:", template_file)
-            t = Template(owner=request.user, name=name, file=template_file)
+            t = Template(owner=request.user, name=name, file=upload_dir + template_file)
             t.save()
             return HttpResponseRedirect('/template/')
     else:
@@ -369,10 +365,13 @@ def new_template(request):
     return render(request, 'viewer/template_form.html', {'form': form})
 
 def preview_template(request):
-    template_file = ''
-    with open(filepath, 'r') as fp:
+    resumes = Resume.objects.get().order_by("id")
+    my_resume = resumes.filter(id=kwargs.get('pk'))
+    my_template = my_resume.template
+    print("TEMPLATE: {0}".format(my_template))
+    with open(my_template.file, 'r') as fp:
         data = fp.read()
-    served_filename = ''
+    served_filename = 'test.docx'
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     response.write(data)
