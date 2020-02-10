@@ -2,12 +2,15 @@ import os
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 
 from django.http import JsonResponse
 from django.views.generic import TemplateView, UpdateView, DeleteView
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Employment, Applicant, Experience, Education, Resume, Domain, Experience, Reference, Project, Duty, Template
 
@@ -754,3 +757,18 @@ def create_resume_json(pk):
         print(reference_json)
         resume_json['references'].append(reference_json)
     return resume_json
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'viewer/signup.html', {'form': form})

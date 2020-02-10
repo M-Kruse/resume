@@ -1,6 +1,8 @@
 from django.urls import path
+from django.conf.urls import url
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = 'resume'
@@ -51,5 +53,8 @@ urlpatterns = [
     path('template/edit/<int:pk>', login_required(views.TemplateUpdateView.as_view()), name='updateTemplate'),
     path('template/delete/<int:pk>', login_required(views.TemplateDeleteView.as_view()), name='deleteTemplate'),
     path('template/view/<int:pk>', login_required(views.view_template), name='previewTemplate'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    #This seems to be the latest convention for urls (vs using path() )
+    url(r'^signup/$', views.signup, name='signup'),
 
 ]
