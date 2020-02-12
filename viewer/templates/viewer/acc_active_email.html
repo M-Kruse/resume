@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hi {{ user.username }},
+
+This email is to confirm your new Resume account.
+
+Please click on the link to confirm your account registration.
+
+http://{{ domain }}{% url 'resume:activate' uidb64=uid token=token %}
+
+{% endautoescape %}
