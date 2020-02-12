@@ -121,8 +121,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.join(PROJECT_ROOT,'../myapp')
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT,'staticfiles/')
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/devel/Code/resume/viewer/static/'
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR,'static/'),
+)
 
 LOGIN_URL = '/accounts/login/'
 
@@ -133,6 +139,6 @@ MEDIA_ROOT = '/media/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'django.applied@gmail.com'
-EMAIL_HOST_PASSWORD = '***REMOVED***'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
