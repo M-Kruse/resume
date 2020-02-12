@@ -7,6 +7,8 @@ from django.views.generic.edit import UpdateView
 
 from django.conf import settings
 
+from django import forms
+
 class Employment(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=128, default=None)

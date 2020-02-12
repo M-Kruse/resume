@@ -130,3 +130,9 @@ LOGIN_REDIRECT_URL = '/'
 
 # Media root directory
 MEDIA_ROOT = '/media/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'django.applied@gmail.com'
+EMAIL_HOST_PASSWORD = '2020KnowledgE2020'
+EMAIL_PORT = 587
