@@ -1,6 +1,8 @@
 from django.forms import ModelForm
 from viewer.models import Employment, Applicant, Experience, Education, Resume, Domain, Reference, Project, Duty, Template
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django import forms
 
 class ResumeForm(ModelForm):
 	class Meta:
@@ -51,3 +53,9 @@ class TemplateForm(ModelForm):
 	class Meta:
 		model = Template
 		fields = ['name', 'file']
+
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(max_length=200, help_text='Required')    
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
