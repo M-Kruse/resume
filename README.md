@@ -8,7 +8,8 @@ First run requires running migrations while the docker-compose containers are ru
 
 `docker-compose up`
 
-`docker-compose run web python3 manage.py makemigrations viewer && python3 manage.py sqlmigrate viewer 0001 && python3 manage.py migrate`
+`docker-compose run web python3 manage.py makemigrations`
+`docker-compose run web python3 manage.py migrate`
 
 Landing Page:
 
