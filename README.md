@@ -6,10 +6,10 @@ This uses docker-compose to facilitate the development environment.
 
 First run requires running migrations while the docker-compose containers are running.
 
-`docker-compose up`
 
-`docker-compose run web python3 manage.py makemigrations`  
+`docker-compose run web python3 manage.py makemigrations viewer`  
 `docker-compose run web python3 manage.py migrate`
+`docker-compose up`
 
 Landing Page:
 
